@@ -86,6 +86,7 @@ class Tulip extends createjs.Container {
 		// var graphics = bottomPart.graphics.f(color).s(color).mt(-width/2, -100).lt(-width/2,-50).a(0,-50,width/2,0,Math.PI,false).lt(width/2,-50).lt(width/2,-100).lt(-width/2,-100).es().ef();
 		var graphics = bottomPart.graphics.f(color).s(color).mt(-width/2,rectY).lt(-width/2,curveY).a(0,curveY,width/2,0,Math.PI,false);
 		graphics.lt(width/2,curveY).lt(width/2,rectY).lt(-width/2,rectY).es().ef();
+		
 		var petalGroup = drawTriangles({x:-width/2,y:rectY},{x:width/2,y:rectY},3,20,color);
 		this.addChild(bottomPart,petalGroup);
 	}	
@@ -188,10 +189,16 @@ class Message extends createjs.Container {
 }
 
 function makeCentralArea() {
+
+
 	var centralArea = new createjs.Container();
-	var [x,y] = [150,150];
+	centralArea.widthRatio = 0.6;
+	centralArea.heightRatio = 0.3;
+
+	// var [x,y] = [150,150];
+	var [x,y] = [(stage.canvas.width - centralArea.widthRatio * stage.canvas.width)/2, (stage.canvas.height - stage.canvas.height * centralArea.heightRatio)/2];
 	centralArea.set({x,y});
-	var bounds = [0,0, stage.canvas.width-2*x, stage.canvas.height-2*y];
+	var bounds = [0,0, stage.canvas.width*centralArea.widthRatio, stage.canvas.height* centralArea.heightRatio];
 	console.log(bounds);
 	centralArea.setBounds(...bounds);
 	var fond = new createjs.Shape();
@@ -225,10 +232,13 @@ function makeFallingTulips(centralArea) {
 
 
 
-var tulip;
+var tulip,centralArea;
 window.addEventListener('load',()=>{
 	createjs.MotionGuidePlugin.install();
 	var canvas = document.querySelector('canvas');
+
+	canvas.width = window.innerWidth;
+	canvas.height = window.innerHeight;
 
 	stage = new createjs.Stage(canvas);
 
@@ -238,13 +248,15 @@ window.addEventListener('load',()=>{
 	var sf1 = new SimpleFlower(300,100,6,'papayawhip');
 
 
+	// black background
 	var bg = new createjs.Shape();
 	bg.graphics.f('black').dr(0,0,canvas.width,canvas.height).ef();
+
 	var fc = new FlowerCarpet();
 	stage.addChild(bg, tulip,sf1, new Message("HML"), fc);
 
 
-	var centralArea = makeCentralArea();
+	centralArea = makeCentralArea();
 	fc.moveAwayFrom(centralArea,()=> {
 		makeFallingTulips(centralArea);
 	});
