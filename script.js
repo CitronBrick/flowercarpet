@@ -344,7 +344,7 @@ function getMessageFromQueryString() {
 		var usp = new URLSearchParams(search);
 		let msg = usp.get('text');
 		if(msg) {
-			return msg;
+			return atob(msg);
 		}
 	}
 	return '';
@@ -381,7 +381,7 @@ function setup() {
 
 	// black background
 	var bg = new createjs.Shape();
-	bg.graphics.f('azure').dr(0,0,canvas.width,canvas.height).ef();
+	bg.graphics.f('MintCream').dr(0,0,canvas.width,canvas.height).ef();
 
 	var fc = new FlowerCarpet();
 	stage.addChild(bg, sf1, fc);
