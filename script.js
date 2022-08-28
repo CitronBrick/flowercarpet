@@ -164,6 +164,7 @@ class FlowerCarpet extends createjs.Container {
 		}
 		this.on('mousedown',this.ripple);
 		this.on('pressmove',this.ripple);
+		this.on('mouseover',this.ripple);
 	}
 
 	ripple=(evt)=> {
@@ -312,7 +313,7 @@ function makeSlowFallingTulips(centralArea) {
 	setInterval(()=> {
 		var times = random(5);
 		for(var k = 0; k < times; k++ ) {
-			var color = 'mistyrose'; //getRandomColor();
+			var color = 'LightPink'; //getRandomColor();
 			let tulip = new Tulip(random(bounds.width), 0, color);
 			tulip.scale = (1+random(3))/10;
 			centralArea.addChild(tulip);		
@@ -381,10 +382,11 @@ function setup() {
 
 	// black background
 	var bg = new createjs.Shape();
-	bg.graphics.f('MintCream').dr(0,0,canvas.width,canvas.height).ef();
+	bg.graphics.f('mintcream').dr(0,0,canvas.width,canvas.height).ef();
 
 	var fc = new FlowerCarpet();
 	stage.addChild(bg, sf1, fc);
+	stage.enableMouseOver(20);
 
 
 	centralArea = makeCentralArea();
