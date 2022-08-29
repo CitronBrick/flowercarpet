@@ -309,6 +309,7 @@ function makeFallingTulips(centralArea) {
 			if(i == 9 && j == 39) { // last iteration
 				tw.call(()=>{
 					// addMessage(centralArea);
+					createjs.Tween.get(text).to({alpha:1}, 500);
 					makeSlowFallingTulips(centralArea);
 				})
 			}
@@ -344,6 +345,7 @@ function makeMessage() {
 	
 	text.x = (stage.canvas.width)/2;
 	text.y = (stage.canvas.height-metrics.height)/2 ;
+	text.alpha = 0;
 	console.log(text.x,text.y);
 	return text;
 }
