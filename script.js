@@ -325,7 +325,8 @@ function makeSlowFallingTulips(centralArea) {
 function addMessage(centralArea) {
 	var msg = getMessageFromQueryString() || 'Happy Wedding Anniversary';
 	msg = msg.replace(/ /g,'\n');
-	var text= new createjs.Text(msg, 'bold 3vh Script MT','RebeccaPurple');
+	// var text= new createjs.Text(msg, 'bold 3vh Script MT','RebeccaPurple');
+	var text= new createjs.Text(msg, 'bold 3vh GreatVibes','RebeccaPurple');
 	text.textbaseLine = 'middle';
 	text.textAlign = 'center';
 	text.shadow = new createjs.Shadow('teal',5,5,10);
