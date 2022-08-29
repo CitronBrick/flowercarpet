@@ -267,7 +267,7 @@ function makeCentralArea() {
 
 	var metrics = text.getMetrics();
 	console.log(metrics);
-	var bounds = [0,0, Math.max(metrics.width * 1.5, canvas.width * centralArea.widthRatio), Math.max(metrics.lines.length * metrics.height * 1.2, canvas.height* centralArea.heightRatio)];
+	var bounds = [0,0, Math.max(metrics.width * 1.4, canvas.width * centralArea.widthRatio), Math.max(metrics.lines.length * metrics.height , canvas.height* centralArea.heightRatio)];
 
 	var [x,y] = [(stage.canvas.width - bounds[2])/2, (stage.canvas.height - bounds[3])/2];
 	centralArea.set({x,y, name:'centralArea'});
@@ -336,16 +336,17 @@ function makeMessage() {
 	// msg = stage.canvas.width < stage.canvas.height ? msg.replace(/ /g,'\n'): msg;
 	msg = msg.replace(/ /g,'\n');
 	// var text= new createjs.Text(msg, 'bold 3vh Script MT','RebeccaPurple');
-	text= new createjs.Text(msg, 'bold 4vh GreatVibes','RebeccaPurple');
+	text= new createjs.Text(msg, 'bold 5vh GreatVibes','RebeccaPurple');
 	text.textbaseLine = 'middle';
 	text.textAlign = 'center';
 	text.shadow = new createjs.Shadow('teal',5,5,10);
 	// text.lineHeight = 10;
 	var metrics = text.getMetrics();
-	
+
 	text.x = (stage.canvas.width)/2;
 	text.y = (stage.canvas.height-metrics.height)/2 ;
 	text.alpha = 0;
+	console.log(metrics);
 	console.log(text.x,text.y);
 	return text;
 }
