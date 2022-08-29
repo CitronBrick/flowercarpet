@@ -187,6 +187,7 @@ class FlowerCarpet extends createjs.Container {
 
 	moveAwayFrom(centralArea, clbk) {
 		var centralAreaBounds = centralArea.getBounds();
+		console.log(centralAreaBounds);
 		centralArea.set({bottomX: centralArea.x + centralAreaBounds.x + centralAreaBounds.width, bottomY: centralArea.y + centralAreaBounds.y + centralAreaBounds.height});
 		var centralFlowers = this.carpetList.filter(f=>{
 			var bounds = f.getBounds();
@@ -255,18 +256,24 @@ function makeCentralArea() {
 	centralArea.widthRatio = 0.6;
 	centralArea.heightRatio = 0.3;
 
-	var bounds = [0,0, centralArea.widthRatio * stage.canvas.width, Math.max(centralArea.heightRatio * stage.canvas.height, 100)];
 
 
 
 	// var [x,y] = [150,150];
 	// var [x,y] = [(stage.canvas.width - centralArea.widthRatio * stage.canvas.width)/2, (stage.canvas.height - stage.canvas.height * centralArea.heightRatio)/2];
 
+	var text = makeMessage();
+	stage.addChild(text);
+
+	var metrics = text.getMetrics();
+	console.log(metrics);
+	var bounds = [0,0, Math.max(metrics.width * 1.5, canvas.width * centralArea.widthRatio), Math.max(metrics.lines.length * metrics.height * 1.2, canvas.height* centralArea.heightRatio)];
+
 	var [x,y] = [(stage.canvas.width - bounds[2])/2, (stage.canvas.height - bounds[3])/2];
 	centralArea.set({x,y, name:'centralArea'});
 	console.log(bounds);
-	console.log(x,y);
 	centralArea.setBounds(...bounds);
+	console.log(centralArea.getBounds());
 	var fond = new createjs.Shape();
 	fond.setBounds(...bounds);
 	fond.graphics.f('gold').dr(0,0,bounds[2],bounds[3]).ef();
@@ -279,11 +286,12 @@ function makeCentralArea() {
 
 	var border = new createjs.Shape();
 	border.set({x:0,y:0,name:'border'});
-	border.graphics.ss(15).s('red').dr(0,0,bounds.width, bounds.height).es();
+	border.graphics.ss(15).s('red').dr(...bounds).es();
 	// setTimeout(()=>{
-		centralArea.addChild(border);
+		// centralArea.addChild(border);
 		console.log('added');
 	// },1000);
+
 	return centralArea;
 }
 
@@ -300,7 +308,7 @@ function makeFallingTulips(centralArea) {
 			var tw = createjs.Tween.get(tulip).to({y:380},time).call(()=>{centralArea.removeChild(tulip)});
 			if(i == 9 && j == 39) { // last iteration
 				tw.call(()=>{
-					addMessage(centralArea);
+					// addMessage(centralArea);
 					makeSlowFallingTulips(centralArea);
 				})
 			}
@@ -322,22 +330,22 @@ function makeSlowFallingTulips(centralArea) {
 	},500);
 }
 
-function addMessage(centralArea) {
+function makeMessage() {
 	var msg = getMessageFromQueryString() || 'Happy Wedding Anniversary';
+	// msg = stage.canvas.width < stage.canvas.height ? msg.replace(/ /g,'\n'): msg;
 	msg = msg.replace(/ /g,'\n');
 	// var text= new createjs.Text(msg, 'bold 3vh Script MT','RebeccaPurple');
-	var text= new createjs.Text(msg, 'bold 3vh GreatVibes','RebeccaPurple');
+	text= new createjs.Text(msg, 'bold 4vh GreatVibes','RebeccaPurple');
 	text.textbaseLine = 'middle';
 	text.textAlign = 'center';
 	text.shadow = new createjs.Shadow('teal',5,5,10);
-	var metrics = text.getMetrics();
 	// text.lineHeight = 10;
-	console.log(metrics)
-	var centralAreaBounds = centralArea.getBounds();
-	text.x = (centralAreaBounds.width)/2;
-	text.y = (centralAreaBounds.height-metrics.height)/2 ;
+	var metrics = text.getMetrics();
+	
+	text.x = (stage.canvas.width)/2;
+	text.y = (stage.canvas.height-metrics.height)/2 ;
 	console.log(text.x,text.y);
-	centralArea.addChild(text);
+	return text;
 }
 
 function getMessageFromQueryString() {
@@ -353,7 +361,7 @@ function getMessageFromQueryString() {
 }
 
 
-var tulip,centralArea,canvas;
+var tulip,centralArea,canvas,text;
 window.addEventListener('load',()=>{
 	createjs.MotionGuidePlugin.install();
 	createjs.RelativePlugin.install();
